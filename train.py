@@ -707,13 +707,12 @@ def main():
         )
 
         logger.log_epoch(
-
-            epoch,
-
-            train_loss,
-
-            results
-
+          epoch=epoch,
+          train_loss=train_loss,
+          val_loss=results["val_loss"],
+          metrics=results,
+          learning_rate=lr,
+          epoch_time=epoch_time
         )
 
         if results["mean_iou"] > best_iou:

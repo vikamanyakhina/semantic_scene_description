@@ -44,7 +44,7 @@ TEXTURE_TYPE = None
 # Данные
 # ==========================================================
 
-IMAGE_SIZE = 512
+IMAGE_SIZE = 256
 
 NUM_CLASSES = 8
 
@@ -67,15 +67,15 @@ CLASS_NAMES = [
 
 MODEL_NAME = "LightUNet"
 
-BATCH_SIZE = 4
+BATCH_SIZE = 2
 
-NUM_EPOCHS = 30
+NUM_EPOCHS = 3
 
 LEARNING_RATE = 1e-4
 
 WEIGHT_DECAY = 1e-4
 
-NUM_WORKERS = 2
+NUM_WORKERS = 0
 
 PATIENCE = 8
 
