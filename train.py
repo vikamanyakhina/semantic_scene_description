@@ -397,13 +397,22 @@ def validate(
         prediction_visualizer,
         device,
         epoch
-):
+        ):
     """
     Валидация модели после эпохи обучения.
+
+    Returns
+    -------
+    dict
+        Все вычисленные метрики.
     """
+
     model.eval()
+
     metrics.reset()
+
     running_loss = 0.0
+
     saved_predictions = False
 
     progress = tqdm(
@@ -413,39 +422,66 @@ def validate(
     )
 
     for images, masks in progress:
+
         images = images.to(device)
+
         masks = masks.to(device)
 
         outputs = model(images)
-        loss = criterion(outputs, masks)
-        running_loss += loss.item()
 
-        metrics.update(outputs, masks)
-
-        progress.set_postfix(
-            loss=f"{loss.item():.4f}"
+        loss = criterion(
+            outputs,
+            masks
         )
 
+        running_loss += loss.item()
+
+        metrics.update(
+            outputs,
+            masks
+        )
+
+        progress.set_postfix(
+
+            loss=f"{loss.item():.4f}"
+
+        )
+
+        # --------------------------------------------
+        # сохраняем несколько предсказаний
+        # только один раз за эпоху
+        # --------------------------------------------
+
         if not saved_predictions:
+
             prediction_visualizer.save_batch(
+
                 images,
+
                 masks,
+
                 outputs,
+
                 epoch,
+
                 number=3
+
             )
+
             saved_predictions = True
 
     summary = metrics.summary()
-    summary["val_loss"] = running_loss / len(loader)
-    
-    # ДОБАВЬТЕ ЭТИ СТРОКИ:
-    # Если в summary нет class_iou и class_dice, создаем их
-    if "class_iou" not in summary:
-        summary["class_iou"] = [0.0] * config.NUM_CLASSES
-    if "class_dice" not in summary:
-        summary["class_dice"] = [0.0] * config.NUM_CLASSES
-    
+
+    summary["val_loss"] = (
+
+        running_loss /
+
+        len(loader)
+
+    )
+
+    return summary
+
 # --------------------------------------------------------
 # Красивый вывод результатов эпохи
 # --------------------------------------------------------
