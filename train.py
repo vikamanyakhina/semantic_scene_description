@@ -174,7 +174,7 @@ def build_dataloaders():
         batch_size=config.BATCH_SIZE,
         shuffle=True,
         num_workers=config.NUM_WORKERS,
-        pin_memory=True
+        pin_memory=False
     )
 
     val_loader = DataLoader(
@@ -182,7 +182,7 @@ def build_dataloaders():
         batch_size=config.BATCH_SIZE,
         shuffle=False,
         num_workers=config.NUM_WORKERS,
-        pin_memory=True
+        pin_memory=False
     )
 
     return train_loader, val_loader
@@ -197,7 +197,7 @@ def build_dataloaders():
 
         num_workers=config.NUM_WORKERS,
 
-        pin_memory=True
+        pin_memory=False
 
     )
 
@@ -211,7 +211,7 @@ def build_dataloaders():
 
         num_workers=config.NUM_WORKERS,
 
-        pin_memory=True
+        pin_memory=False
 
     )
 
@@ -417,6 +417,40 @@ def train_one_epoch(
         len(loader)
 
     )
+    import time
+
+for images, masks in progress:
+
+    t0 = time.time()
+
+    images = images.to(device)
+    masks = masks.to(device)
+
+    t1 = time.time()
+
+    optimizer.zero_grad()
+
+    outputs = model(images)
+
+    loss = criterion(outputs, masks)
+
+    loss.backward()
+
+    optimizer.step()
+
+    t2 = time.time()
+
+    metrics.update(outputs, masks)
+
+    t3 = time.time()
+
+    print(
+        f"Load: {t1-t0:.3f} | "
+        f"Train: {t2-t1:.3f} | "
+        f"Metrics: {t3-t2:.3f}"
+    )
+
+    break
 
     return train_loss, epoch_time
 
