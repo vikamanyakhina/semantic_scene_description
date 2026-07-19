@@ -380,46 +380,46 @@ def train_one_epoch(
 
   for images, masks in progress:
 
-    t0 = time.time()
+      t0 = time.time()
 
-    images = images.to(device)
-    masks = masks.to(device)
+      images = images.to(device)
+      masks = masks.to(device)
 
-    t1 = time.time()
+      t1 = time.time()
 
-    optimizer.zero_grad()
+      optimizer.zero_grad()
 
-    outputs = model(images)
+      outputs = model(images)
 
-    loss = criterion(outputs, masks)
+      loss = criterion(outputs, masks)
 
-    loss.backward()
+      loss.backward()
 
-    optimizer.step()
+      optimizer.step()
 
-    t2 = time.time()
+      t2 = time.time()
 
-    metrics.update(outputs, masks)
+      metrics.update(outputs, masks)
 
-    t3 = time.time()
+      t3 = time.time()
 
-    print(
-        f"Load: {t1-t0:.3f} | "
-        f"Train: {t2-t1:.3f} | "
-        f"Metrics: {t3-t2:.3f}"
-    )
+      print(
+          f"Load: {t1-t0:.3f} | "
+          f"Train: {t2-t1:.3f} | "
+          f"Metrics: {t3-t2:.3f}"
+      )
 
-    break
+      break
 
-    epoch_time = time.time() - start_time
+      epoch_time = time.time() - start_time
 
-    train_loss = (
+     train_loss = (
 
         running_loss /
 
         len(loader)
 
-    )
+      )
     
 
     return train_loss, epoch_time
