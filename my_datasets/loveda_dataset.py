@@ -21,13 +21,20 @@ class LoveDADataset(Dataset):
             root_dir,
             split="Train",
             texture=None,
-            transform=None
+            transform=None,
+            use_texture=False,
+            texture_type=None, 
+            texture_dir=None
     ):
 
         self.root_dir = Path(root_dir)
         self.split = split
         self.texture = texture
         self.transform = transform
+        self.use_texture = use_texture
+        self.texture_type = texture_type
+        self.texture_dir = texture_dir
+
 
         self.samples = []
 

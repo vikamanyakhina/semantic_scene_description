@@ -14,7 +14,7 @@ import torch
 
 PROJECT_ROOT = Path(__file__).parent
 
-DATASET_PATH = PROJECT_ROOT / "data" / "LoveDA_small"
+DATASET_PATH = PROJECT_ROOT / "data/LoveDA_small"
 
 OUTPUT_DIR = PROJECT_ROOT / "outputs"
 
