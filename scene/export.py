@@ -7,7 +7,7 @@ scene/export.py
 import json
 from pathlib import Path
 
-from geometry import (
+from scene.geometry import (
     compute_area_percent,
     compute_position,
     compute_zones,

@@ -1,0 +1,1106 @@
+{
+    "image_height": 1024,
+    "image_width": 1024,
+    "objects": [
+        {
+            "id": 0,
+            "class": "building",
+            "area_pixels": 472635,
+            "area_percent": 45.07,
+            "position": "center_top",
+            "zones": [
+                "center",
+                "center_bottom",
+                "center_top",
+                "left_bottom",
+                "left_center",
+                "left_top",
+                "right_bottom",
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                0,
+                0,
+                927,
+                855
+            ],
+            "center": [
+                441.79,
+                340.95
+            ],
+            "touches_border": true,
+            "aspect_ratio": 1.08
+        },
+        {
+            "id": 1,
+            "class": "building",
+            "area_pixels": 55,
+            "area_percent": 0.01,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                889,
+                0,
+                4,
+                37
+            ],
+            "center": [
+                890.65,
+                15.38
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.11
+        },
+        {
+            "id": 2,
+            "class": "building",
+            "area_pixels": 28205,
+            "area_percent": 2.69,
+            "position": "right_center",
+            "zones": [
+                "right_bottom",
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                930,
+                0,
+                94,
+                1024
+            ],
+            "center": [
+                993.28,
+                506.56
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.09
+        },
+        {
+            "id": 3,
+            "class": "building",
+            "area_pixels": 109,
+            "area_percent": 0.01,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                61,
+                809,
+                37,
+                6
+            ],
+            "center": [
+                74.91,
+                811.98
+            ],
+            "touches_border": false,
+            "aspect_ratio": 6.17
+        },
+        {
+            "id": 4,
+            "class": "building",
+            "area_pixels": 1243,
+            "area_percent": 0.12,
+            "position": "right_bottom",
+            "zones": [
+                "right_bottom"
+            ],
+            "bbox": [
+                924,
+                948,
+                21,
+                76
+            ],
+            "center": [
+                934.57,
+                983.86
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.28
+        },
+        {
+            "id": 5,
+            "class": "building",
+            "area_pixels": 1061,
+            "area_percent": 0.1,
+            "position": "center_bottom",
+            "zones": [
+                "center_bottom",
+                "right_bottom"
+            ],
+            "bbox": [
+                567,
+                1002,
+                117,
+                22
+            ],
+            "center": [
+                633.78,
+                1012.13
+            ],
+            "touches_border": true,
+            "aspect_ratio": 5.32
+        },
+        {
+            "id": 6,
+            "class": "road",
+            "area_pixels": 175,
+            "area_percent": 0.02,
+            "position": "center_top",
+            "zones": [
+                "center_top"
+            ],
+            "bbox": [
+                531,
+                0,
+                53,
+                6
+            ],
+            "center": [
+                563.8,
+                1.56
+            ],
+            "touches_border": true,
+            "aspect_ratio": 8.83
+        },
+        {
+            "id": 7,
+            "class": "road",
+            "area_pixels": 3154,
+            "area_percent": 0.3,
+            "position": "right_top",
+            "zones": [
+                "center_top",
+                "right_top"
+            ],
+            "bbox": [
+                625,
+                0,
+                175,
+                29
+            ],
+            "center": [
+                728.17,
+                9.54
+            ],
+            "touches_border": true,
+            "aspect_ratio": 6.03
+        },
+        {
+            "id": 8,
+            "class": "road",
+            "area_pixels": 974,
+            "area_percent": 0.09,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                969,
+                0,
+                55,
+                19
+            ],
+            "center": [
+                995.73,
+                8.46
+            ],
+            "touches_border": true,
+            "aspect_ratio": 2.89
+        },
+        {
+            "id": 9,
+            "class": "road",
+            "area_pixels": 1430,
+            "area_percent": 0.14,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                987,
+                72,
+                37,
+                43
+            ],
+            "center": [
+                1005.91,
+                93.08
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.86
+        },
+        {
+            "id": 10,
+            "class": "road",
+            "area_pixels": 10112,
+            "area_percent": 0.96,
+            "position": "left_top",
+            "zones": [
+                "left_top"
+            ],
+            "bbox": [
+                9,
+                83,
+                166,
+                76
+            ],
+            "center": [
+                91.7,
+                120.46
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.18
+        },
+        {
+            "id": 11,
+            "class": "road",
+            "area_pixels": 9794,
+            "area_percent": 0.93,
+            "position": "left_top",
+            "zones": [
+                "center_top",
+                "left_top"
+            ],
+            "bbox": [
+                223,
+                117,
+                163,
+                74
+            ],
+            "center": [
+                304.04,
+                153.76
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.2
+        },
+        {
+            "id": 12,
+            "class": "road",
+            "area_pixels": 5976,
+            "area_percent": 0.57,
+            "position": "right_top",
+            "zones": [
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                989,
+                135,
+                35,
+                223
+            ],
+            "center": [
+                1009.55,
+                234.69
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.16
+        },
+        {
+            "id": 13,
+            "class": "road",
+            "area_pixels": 9966,
+            "area_percent": 0.95,
+            "position": "center_top",
+            "zones": [
+                "center_top"
+            ],
+            "bbox": [
+                424,
+                139,
+                171,
+                68
+            ],
+            "center": [
+                509.39,
+                172.56
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.51
+        },
+        {
+            "id": 14,
+            "class": "road",
+            "area_pixels": 8560,
+            "area_percent": 0.82,
+            "position": "right_top",
+            "zones": [
+                "center_top",
+                "right_top"
+            ],
+            "bbox": [
+                643,
+                142,
+                173,
+                61
+            ],
+            "center": [
+                728.85,
+                171.95
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.84
+        },
+        {
+            "id": 15,
+            "class": "road",
+            "area_pixels": 11716,
+            "area_percent": 1.12,
+            "position": "left_top",
+            "zones": [
+                "left_center",
+                "left_top"
+            ],
+            "bbox": [
+                23,
+                276,
+                180,
+                79
+            ],
+            "center": [
+                112.76,
+                315.14
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.28
+        },
+        {
+            "id": 16,
+            "class": "road",
+            "area_pixels": 8087,
+            "area_percent": 0.77,
+            "position": "center_top",
+            "zones": [
+                "center",
+                "center_top"
+            ],
+            "bbox": [
+                406,
+                289,
+                163,
+                88
+            ],
+            "center": [
+                483.54,
+                331.68
+            ],
+            "touches_border": false,
+            "aspect_ratio": 1.85
+        },
+        {
+            "id": 17,
+            "class": "road",
+            "area_pixels": 9016,
+            "area_percent": 0.86,
+            "position": "right_center",
+            "zones": [
+                "center",
+                "center_top",
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                653,
+                319,
+                176,
+                60
+            ],
+            "center": [
+                740.46,
+                348.04
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.93
+        },
+        {
+            "id": 18,
+            "class": "road",
+            "area_pixels": 2517,
+            "area_percent": 0.24,
+            "position": "center",
+            "zones": [
+                "center",
+                "left_center"
+            ],
+            "bbox": [
+                332,
+                366,
+                66,
+                44
+            ],
+            "center": [
+                364.22,
+                387.4
+            ],
+            "touches_border": false,
+            "aspect_ratio": 1.5
+        },
+        {
+            "id": 19,
+            "class": "road",
+            "area_pixels": 7336,
+            "area_percent": 0.7,
+            "position": "right_center",
+            "zones": [
+                "right_bottom",
+                "right_center"
+            ],
+            "bbox": [
+                993,
+                382,
+                31,
+                381
+            ],
+            "center": [
+                1012.72,
+                534.97
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.08
+        },
+        {
+            "id": 20,
+            "class": "road",
+            "area_pixels": 9741,
+            "area_percent": 0.93,
+            "position": "right_center",
+            "zones": [
+                "center",
+                "right_center"
+            ],
+            "bbox": [
+                655,
+                437,
+                187,
+                67
+            ],
+            "center": [
+                748.11,
+                469.93
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.79
+        },
+        {
+            "id": 21,
+            "class": "road",
+            "area_pixels": 8568,
+            "area_percent": 0.82,
+            "position": "center",
+            "zones": [
+                "center"
+            ],
+            "bbox": [
+                447,
+                455,
+                163,
+                62
+            ],
+            "center": [
+                528.4,
+                485.24
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.63
+        },
+        {
+            "id": 22,
+            "class": "road",
+            "area_pixels": 8657,
+            "area_percent": 0.83,
+            "position": "left_center",
+            "zones": [
+                "center",
+                "left_center"
+            ],
+            "bbox": [
+                253,
+                465,
+                161,
+                64
+            ],
+            "center": [
+                332.89,
+                496.91
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.52
+        },
+        {
+            "id": 23,
+            "class": "road",
+            "area_pixels": 11868,
+            "area_percent": 1.13,
+            "position": "left_center",
+            "zones": [
+                "left_center"
+            ],
+            "bbox": [
+                32,
+                469,
+                184,
+                76
+            ],
+            "center": [
+                123.56,
+                506.55
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.42
+        },
+        {
+            "id": 24,
+            "class": "road",
+            "area_pixels": 10983,
+            "area_percent": 1.05,
+            "position": "right_center",
+            "zones": [
+                "center",
+                "right_center"
+            ],
+            "bbox": [
+                640,
+                557,
+                206,
+                64
+            ],
+            "center": [
+                742.93,
+                588.55
+            ],
+            "touches_border": false,
+            "aspect_ratio": 3.22
+        },
+        {
+            "id": 25,
+            "class": "road",
+            "area_pixels": 8122,
+            "area_percent": 0.77,
+            "position": "center",
+            "zones": [
+                "center"
+            ],
+            "bbox": [
+                445,
+                572,
+                155,
+                63
+            ],
+            "center": [
+                521.81,
+                602.72
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.46
+        },
+        {
+            "id": 26,
+            "class": "road",
+            "area_pixels": 7315,
+            "area_percent": 0.7,
+            "position": "left_center",
+            "zones": [
+                "center",
+                "left_center"
+            ],
+            "bbox": [
+                256,
+                589,
+                150,
+                59
+            ],
+            "center": [
+                330.5,
+                618.0
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.54
+        },
+        {
+            "id": 27,
+            "class": "road",
+            "area_pixels": 7416,
+            "area_percent": 0.71,
+            "position": "left_center",
+            "zones": [
+                "left_center"
+            ],
+            "bbox": [
+                66,
+                600,
+                156,
+                61
+            ],
+            "center": [
+                143.76,
+                630.24
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.56
+        },
+        {
+            "id": 28,
+            "class": "road",
+            "area_pixels": 991,
+            "area_percent": 0.09,
+            "position": "left_center",
+            "zones": [
+                "left_center"
+            ],
+            "bbox": [
+                0,
+                622,
+                23,
+                46
+            ],
+            "center": [
+                10.56,
+                645.03
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.5
+        },
+        {
+            "id": 29,
+            "class": "road",
+            "area_pixels": 120707,
+            "area_percent": 11.51,
+            "position": "center_bottom",
+            "zones": [
+                "center",
+                "center_bottom",
+                "left_bottom",
+                "left_center",
+                "right_bottom",
+                "right_center"
+            ],
+            "bbox": [
+                0,
+                673,
+                726,
+                329
+            ],
+            "center": [
+                470.48,
+                866.72
+            ],
+            "touches_border": true,
+            "aspect_ratio": 2.21
+        },
+        {
+            "id": 30,
+            "class": "water",
+            "area_pixels": 40449,
+            "area_percent": 3.86,
+            "position": "right_center",
+            "zones": [
+                "right_bottom",
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                891,
+                0,
+                101,
+                1024
+            ],
+            "center": [
+                940.05,
+                521.88
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.1
+        },
+        {
+            "id": 31,
+            "class": "water",
+            "area_pixels": 30454,
+            "area_percent": 2.9,
+            "position": "left_bottom",
+            "zones": [
+                "center_bottom",
+                "left_bottom"
+            ],
+            "bbox": [
+                0,
+                957,
+                651,
+                67
+            ],
+            "center": [
+                258.54,
+                996.79
+            ],
+            "touches_border": true,
+            "aspect_ratio": 9.72
+        },
+        {
+            "id": 32,
+            "class": "vegetation",
+            "area_pixels": 1161,
+            "area_percent": 0.11,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                0,
+                788,
+                64,
+                29
+            ],
+            "center": [
+                26.36,
+                805.91
+            ],
+            "touches_border": true,
+            "aspect_ratio": 2.21
+        },
+        {
+            "id": 33,
+            "class": "vegetation",
+            "area_pixels": 62,
+            "area_percent": 0.01,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                143,
+                943,
+                7,
+                15
+            ],
+            "center": [
+                147.02,
+                951.82
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.47
+        },
+        {
+            "id": 34,
+            "class": "agricultural",
+            "area_pixels": 12173,
+            "area_percent": 1.16,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                0,
+                813,
+                149,
+                145
+            ],
+            "center": [
+                92.84,
+                885.79
+            ],
+            "touches_border": true,
+            "aspect_ratio": 1.03
+        },
+        {
+            "id": 35,
+            "class": "forest",
+            "area_pixels": 1354,
+            "area_percent": 0.13,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                868,
+                0,
+                27,
+                62
+            ],
+            "center": [
+                880.48,
+                31.03
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.44
+        },
+        {
+            "id": 36,
+            "class": "forest",
+            "area_pixels": 680,
+            "area_percent": 0.06,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                929,
+                0,
+                30,
+                30
+            ],
+            "center": [
+                944.72,
+                11.61
+            ],
+            "touches_border": true,
+            "aspect_ratio": 1.0
+        },
+        {
+            "id": 37,
+            "class": "forest",
+            "area_pixels": 21144,
+            "area_percent": 2.02,
+            "position": "right_center",
+            "zones": [
+                "right_bottom",
+                "right_center",
+                "right_top"
+            ],
+            "bbox": [
+                934,
+                66,
+                73,
+                655
+            ],
+            "center": [
+                969.01,
+                400.99
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.11
+        },
+        {
+            "id": 38,
+            "class": "forest",
+            "area_pixels": 1936,
+            "area_percent": 0.18,
+            "position": "right_top",
+            "zones": [
+                "right_top"
+            ],
+            "bbox": [
+                869,
+                76,
+                29,
+                94
+            ],
+            "center": [
+                882.91,
+                124.0
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.31
+        },
+        {
+            "id": 39,
+            "class": "forest",
+            "area_pixels": 5487,
+            "area_percent": 0.52,
+            "position": "center",
+            "zones": [
+                "center"
+            ],
+            "bbox": [
+                410,
+                371,
+                203,
+                41
+            ],
+            "center": [
+                506.65,
+                390.23
+            ],
+            "touches_border": false,
+            "aspect_ratio": 4.95
+        },
+        {
+            "id": 40,
+            "class": "forest",
+            "area_pixels": 16501,
+            "area_percent": 1.57,
+            "position": "center_bottom",
+            "zones": [
+                "center",
+                "center_bottom",
+                "left_bottom",
+                "left_center"
+            ],
+            "bbox": [
+                231,
+                652,
+                261,
+                104
+            ],
+            "center": [
+                357.79,
+                694.1
+            ],
+            "touches_border": false,
+            "aspect_ratio": 2.51
+        },
+        {
+            "id": 41,
+            "class": "forest",
+            "area_pixels": 1178,
+            "area_percent": 0.11,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom",
+                "left_center"
+            ],
+            "bbox": [
+                24,
+                675,
+                35,
+                46
+            ],
+            "center": [
+                43.04,
+                700.3
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.76
+        },
+        {
+            "id": 42,
+            "class": "forest",
+            "area_pixels": 697,
+            "area_percent": 0.07,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                183,
+                701,
+                22,
+                50
+            ],
+            "center": [
+                191.47,
+                723.21
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.44
+        },
+        {
+            "id": 43,
+            "class": "other",
+            "area_pixels": 92028,
+            "area_percent": 8.78,
+            "position": "right_bottom",
+            "zones": [
+                "center",
+                "center_bottom",
+                "right_bottom",
+                "right_center"
+            ],
+            "bbox": [
+                498,
+                630,
+                447,
+                394
+            ],
+            "center": [
+                807.27,
+                825.06
+            ],
+            "touches_border": true,
+            "aspect_ratio": 1.13
+        },
+        {
+            "id": 44,
+            "class": "other",
+            "area_pixels": 11479,
+            "area_percent": 1.09,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                49,
+                684,
+                120,
+                133
+            ],
+            "center": [
+                107.87,
+                747.31
+            ],
+            "touches_border": false,
+            "aspect_ratio": 0.9
+        },
+        {
+            "id": 45,
+            "class": "other",
+            "area_pixels": 20415,
+            "area_percent": 1.95,
+            "position": "left_bottom",
+            "zones": [
+                "center_bottom",
+                "left_bottom"
+            ],
+            "bbox": [
+                145,
+                690,
+                281,
+                192
+            ],
+            "center": [
+                254.25,
+                815.38
+            ],
+            "touches_border": false,
+            "aspect_ratio": 1.46
+        },
+        {
+            "id": 46,
+            "class": "other",
+            "area_pixels": 587,
+            "area_percent": 0.06,
+            "position": "left_bottom",
+            "zones": [
+                "left_bottom"
+            ],
+            "bbox": [
+                0,
+                695,
+                11,
+                76
+            ],
+            "center": [
+                3.62,
+                728.06
+            ],
+            "touches_border": true,
+            "aspect_ratio": 0.14
+        },
+        {
+            "id": 47,
+            "class": "other",
+            "area_pixels": 4160,
+            "area_percent": 0.4,
+            "position": "center_bottom",
+            "zones": [
+                "center_bottom"
+            ],
+            "bbox": [
+                344,
+                737,
+                113,
+                97
+            ],
+            "center": [
+                405.9,
+                768.42
+            ],
+            "touches_border": false,
+            "aspect_ratio": 1.16
+        }
+    ]
+}

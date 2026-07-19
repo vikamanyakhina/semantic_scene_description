@@ -18,7 +18,7 @@ from scene.export import export_json, export_txt
 # ----------------------------------------------------
 
 MASK_PATH = Path(
-    "data/LoveDA_small/Val/Urban/masks_png/3516.png"
+    "/content/drive/MyDrive/MyProject/data//LoveDA_small/Val/Urban/masks_png/3516.png"
 )
 
 # ----------------------------------------------------
