@@ -25,7 +25,7 @@ class LoveDADataset(Dataset):
             use_texture=False,
             texture_type=None, 
             texture_dir=None
-    ):
+          ):
 
         self.root_dir = Path(root_dir)
         self.split = split
@@ -94,38 +94,27 @@ class LoveDADataset(Dataset):
 
     def __getitem__(self, idx):
 
-        sample = self.samples[idx]
+      sample = self.samples[idx]
 
-        image = np.array(
-            Image.open(sample["image"]).convert("RGB")
-        )
+      image = Image.open(sample["image"]).convert("RGB")
+      mask = Image.open(sample["mask"])
 
-        mask = np.array(
-            Image.open(sample["mask"])
-        )
+      # ----------------------------------------
+      # Масштабируем изображение
+      # ----------------------------------------
 
-        # ----------------------------------------------------
+      image = image.resize(
+        (256, 256),
+        Image.BILINEAR
+      )
 
-        if sample["texture"] is not None:
+      mask = mask.resize(
+        (256, 256),
+        Image.NEAREST
+      )
 
-            texture = np.array(
-                Image.open(sample["texture"])
-            )
+      image = np.array(image)
 
-            image = np.dstack((image, texture))
+      mask = np.array(mask)
 
-        # ----------------------------------------------------
-
-        image = image.astype(np.float32) / 255.0
-
-        image = torch.tensor(
-            image,
-            dtype=torch.float32
-        ).permute(2, 0, 1)
-
-        mask = torch.tensor(
-            mask,
-            dtype=torch.long
-        )
-
-        return image, mask
+      return image, mask

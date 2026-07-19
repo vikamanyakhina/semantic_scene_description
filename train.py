@@ -337,7 +337,7 @@ def train_one_epoch(
         criterion,
         metrics,
         device
-):
+        ):
     """
     Обучение модели в течение одной эпохи.
 
@@ -433,7 +433,7 @@ def validate(
         prediction_visualizer,
         device,
         epoch
-):
+        ):
     """
     Валидация модели после эпохи обучения.
 
@@ -529,7 +529,7 @@ def print_epoch_summary(
         results,
         learning_rate,
         epoch_time
-):
+        ):
 
     print()
 
