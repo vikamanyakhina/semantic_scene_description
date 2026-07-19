@@ -150,23 +150,24 @@ def create_experiment():
 # --------------------------------------------------------
 
 def build_dataloaders():
+
     train_dataset = LoveDADataset(
         root_dir=config.DATASET_PATH,
         split="Train",
-        use_texture=config.USE_TEXTURE,
-        texture_type=config.TEXTURE_TYPE
+        texture=config.TEXTURE,
+        use_texture=config.USE_TEXTURE
     )
 
     val_dataset = LoveDADataset(
         root_dir=config.DATASET_PATH,
         split="Val",
-        use_texture=config.USE_TEXTURE,
-        texture_type=config.TEXTURE_TYPE
+        texture=config.TEXTURE,
+        use_texture=config.USE_TEXTURE
     )
 
     print()
-    print(f"Train images: {len(train_dataset)}")
-    print(f"Validation images: {len(val_dataset)}")
+    print(f"Train images      : {len(train_dataset)}")
+    print(f"Validation images : {len(val_dataset)}")
     print()
 
     train_loader = DataLoader(
@@ -174,7 +175,7 @@ def build_dataloaders():
         batch_size=config.BATCH_SIZE,
         shuffle=True,
         num_workers=config.NUM_WORKERS,
-        pin_memory=False
+        pin_memory=(config.DEVICE == "cuda")
     )
 
     val_loader = DataLoader(
@@ -182,47 +183,10 @@ def build_dataloaders():
         batch_size=config.BATCH_SIZE,
         shuffle=False,
         num_workers=config.NUM_WORKERS,
-        pin_memory=False
+        pin_memory=(config.DEVICE == "cuda")
     )
 
     return train_loader, val_loader
-
-    train_loader = DataLoader(
-
-        train_dataset,
-
-        batch_size=config.BATCH_SIZE,
-
-        shuffle=True,
-
-        num_workers=config.NUM_WORKERS,
-
-        pin_memory=False
-
-    )
-
-    val_loader = DataLoader(
-
-        val_dataset,
-
-        batch_size=config.BATCH_SIZE,
-
-        shuffle=False,
-
-        num_workers=config.NUM_WORKERS,
-
-        pin_memory=True
-
-    )
-
-    return (
-
-        train_loader,
-
-        val_loader
-
-    )
-
 # --------------------------------------------------------
 # Model
 # --------------------------------------------------------
