@@ -1,149 +1,191 @@
 """
 train.py
 
-Обучение модели U-Net для семантической сегментации.
+Обучение модели семантической сегментации.
+
+Проект:
+Semantic Scene Description
 """
 
 from pathlib import Path
-
+import time
 import random
+
 import numpy as np
-from tqdm import tqdm
-
 import torch
-from torch.utils.data import DataLoader
+from models.losses import CombinedLoss
 
-from datasets.loveda_dataset import LoveDADataset
-from models.unet import UNet
-from utils.losses import get_loss
+from torch.utils.data import DataLoader
+from tqdm import tqdm
+import torch.nn.functional as F
+
+# --------------------------------------------------------
+# Конфигурация проекта
+# --------------------------------------------------------
 
 import config
 
+# --------------------------------------------------------
+# Dataset
+# --------------------------------------------------------
 
-# ==========================================================
-# Фиксация генераторов случайных чисел
-# ==========================================================
+from dataset.loveda_dataset import LoveDADataset
 
-def set_seed(seed):
+# --------------------------------------------------------
+# Model
+# --------------------------------------------------------
 
-    random.seed(seed)
+from models.unet import LightUNet
 
-    np.random.seed(seed)
+# --------------------------------------------------------
+# Utils
+# --------------------------------------------------------
 
-    torch.manual_seed(seed)
+from utils.metrics import SegmentationMetrics
+
+from utils.logger import TrainingLogger
+
+from utils.visualization import TrainingVisualizer
+
+from utils.prediction_visualizer import PredictionVisualizer
+
+# --------------------------------------------------------
+# Оптимизация
+# --------------------------------------------------------
+
+from torch.optim import AdamW
+
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+
+# --------------------------------------------------------
+# Для воспроизводимости
+# --------------------------------------------------------
+
+SEED = 42
+
+random.seed(SEED)
+
+np.random.seed(SEED)
+
+torch.manual_seed(SEED)
+
+torch.cuda.manual_seed_all(SEED)
+
+# --------------------------------------------------------
+# Device
+# --------------------------------------------------------
+
+def get_device():
 
     if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
 
+        device = torch.device("cuda")
 
-# ==========================================================
-# Один проход обучения
-# ==========================================================
+    elif torch.backends.mps.is_available():
 
-def train_one_epoch(model,
-                    loader,
-                    optimizer,
-                    criterion,
-                    device):
+        device = torch.device("mps")
 
-    model.train()
+    else:
 
-    running_loss = 0
+        device = torch.device("cpu")
 
-    progress = tqdm(loader)
+    print()
 
-    for images, masks in progress:
+    print("=" * 60)
 
-        images = images.to(device)
+    print("Device:", device)
 
-        masks = masks.to(device)
+    print("=" * 60)
 
-        optimizer.zero_grad()
+    print()
 
-        outputs = model(images)
+    return device
 
-        loss = criterion(outputs, masks)
+# --------------------------------------------------------
+# Создание папок эксперимента
+# --------------------------------------------------------
 
-        loss.backward()
+def create_experiment():
 
-        optimizer.step()
+    experiment_name = config.EXPERIMENT_NAME
 
-        running_loss += loss.item()
+    output_dir = (
 
-        progress.set_description(
+        Path(config.OUTPUT_DIR)
 
-            f"Loss: {loss.item():.4f}"
+        / experiment_name
+
+    )
+
+    folders = [
+
+        output_dir,
+
+        output_dir / "plots",
+
+        output_dir / "history",
+
+        output_dir / "metrics",
+
+        output_dir / "predictions",
+
+        output_dir / "checkpoints"
+
+    ]
+
+    for folder in folders:
+
+        folder.mkdir(
+
+            parents=True,
+
+            exist_ok=True
 
         )
 
-    return running_loss / len(loader)
+    return output_dir
 
+# --------------------------------------------------------
+# Dataset
+# --------------------------------------------------------
 
-# ==========================================================
-# Валидация
-# ==========================================================
-
-@torch.no_grad()
-
-def validate(model,
-             loader,
-             criterion,
-             device):
-
-    model.eval()
-
-    running_loss = 0
-
-    for images, masks in loader:
-
-        images = images.to(device)
-
-        masks = masks.to(device)
-
-        outputs = model(images)
-
-        loss = criterion(outputs, masks)
-
-        running_loss += loss.item()
-
-    return running_loss / len(loader)
-
-
-# ==========================================================
-# Основная функция
-# ==========================================================
-
-def main():
-
-    set_seed(config.SEED)
-
-    device = torch.device(config.DEVICE)
-
-    print(f"Device: {device}")
-
-    # ------------------------------------------------------
+def build_dataloaders():
 
     train_dataset = LoveDADataset(
 
-        root_dir=config.DATASET_PATH,
-
         split="Train",
 
-        texture=config.TEXTURE
+        use_texture=config.USE_TEXTURE,
+
+        texture_type=config.TEXTURE_TYPE
 
     )
 
     val_dataset = LoveDADataset(
 
-        root_dir=config.DATASET_PATH,
-
         split="Val",
 
-        texture=config.TEXTURE
+        use_texture=config.USE_TEXTURE,
+
+        texture_type=config.TEXTURE_TYPE
 
     )
 
-    # ------------------------------------------------------
+    print()
+
+    print(
+
+        f"Train images: {len(train_dataset)}"
+
+    )
+
+    print(
+
+        f"Validation images: {len(val_dataset)}"
+
+    )
+
+    print()
 
     train_loader = DataLoader(
 
@@ -153,7 +195,9 @@ def main():
 
         shuffle=True,
 
-        num_workers=config.NUM_WORKERS
+        num_workers=config.NUM_WORKERS,
+
+        pin_memory=True
 
     )
 
@@ -165,23 +209,29 @@ def main():
 
         shuffle=False,
 
-        num_workers=config.NUM_WORKERS
+        num_workers=config.NUM_WORKERS,
+
+        pin_memory=True
 
     )
 
-    # ------------------------------------------------------
+    return (
 
-    in_channels = 3
+        train_loader,
 
-    if config.TEXTURE is not None:
+        val_loader
 
-        in_channels = 4
+    )
 
-    # ------------------------------------------------------
+# --------------------------------------------------------
+# Model
+# --------------------------------------------------------
 
-    model = UNet(
+def build_model(device):
 
-        in_channels=in_channels,
+    model = LightUNet(
+
+        in_channels=config.IN_CHANNELS,
 
         num_classes=config.NUM_CLASSES
 
@@ -189,47 +239,385 @@ def main():
 
     model.to(device)
 
-    # ------------------------------------------------------
+    return model
 
-    criterion = get_loss()
+# --------------------------------------------------------
+# Optimizer
+# --------------------------------------------------------
 
-    optimizer = torch.optim.Adam(
+def build_optimizer(model):
+
+    optimizer = AdamW(
 
         model.parameters(),
 
-        lr=config.LEARNING_RATE
+        lr=config.LEARNING_RATE,
+
+        weight_decay=1e-4
 
     )
 
-    # ------------------------------------------------------
+    scheduler = ReduceLROnPlateau(
 
-    Path(config.CHECKPOINT_DIR).mkdir(
+        optimizer,
 
-        parents=True,
+        mode="max",
 
-        exist_ok=True
+        factor=0.5,
+
+        patience=3
 
     )
 
-    # ------------------------------------------------------
+    return optimizer, scheduler
 
-    best_loss = float("inf")
+# --------------------------------------------------------
+# Loss
+# --------------------------------------------------------
 
-    # ------------------------------------------------------
+def build_loss():
 
-    for epoch in range(config.NUM_EPOCHS):
+    criterion = CombinedLoss(
+        ce_weight=1.0,
+        dice_weight=1.0
+    )
 
-        print()
+    return criterion
 
-        print("=" * 50)
+# --------------------------------------------------------
+# Utils
+# --------------------------------------------------------
 
-        print(
+def build_utils(output_dir):
 
-            f"Epoch {epoch+1}/{config.NUM_EPOCHS}"
+    logger = TrainingLogger(
+
+        output_dir
+
+    )
+
+    metrics = SegmentationMetrics(
+
+        config.NUM_CLASSES
+
+    )
+
+    visualizer = TrainingVisualizer(
+
+        output_dir
+
+    )
+
+    prediction_visualizer = PredictionVisualizer(
+
+        output_dir
+
+    )
+
+    return (
+
+        logger,
+
+        metrics,
+
+        visualizer,
+
+        prediction_visualizer
+
+    )
+
+# --------------------------------------------------------
+# Обучение одной эпохи
+# --------------------------------------------------------
+
+def train_one_epoch(
+        model,
+        loader,
+        optimizer,
+        criterion,
+        metrics,
+        device
+):
+    """
+    Обучение модели в течение одной эпохи.
+
+    Parameters
+    ----------
+    model : nn.Module
+
+    loader : DataLoader
+
+    optimizer : torch.optim
+
+    criterion : Loss
+
+    metrics : SegmentationMetrics
+
+    device : torch.device
+
+    Returns
+    -------
+    train_loss : float
+
+    epoch_time : float
+    """
+
+    model.train()
+
+    metrics.reset()
+
+    running_loss = 0.0
+
+    start_time = time.time()
+
+    progress = tqdm(
+        loader,
+        desc="Train",
+        leave=False
+    )
+
+    for images, masks in progress:
+
+        images = images.to(device)
+
+        masks = masks.to(device)
+
+        optimizer.zero_grad()
+
+        outputs = model(images)
+
+        loss = criterion(
+            outputs,
+            masks
+        )
+
+        loss.backward()
+
+        optimizer.step()
+
+        running_loss += loss.item()
+
+        metrics.update(
+            outputs,
+            masks
+        )
+
+        progress.set_postfix(
+
+            loss=f"{loss.item():.4f}"
 
         )
 
-        train_loss = train_one_epoch(
+    epoch_time = time.time() - start_time
+
+    train_loss = (
+
+        running_loss /
+
+        len(loader)
+
+    )
+
+    return train_loss, epoch_time
+
+# --------------------------------------------------------
+# Validation
+# --------------------------------------------------------
+
+@torch.no_grad()
+def validate(
+        model,
+        loader,
+        criterion,
+        metrics,
+        prediction_visualizer,
+        device,
+        epoch
+):
+    """
+    Валидация модели после эпохи обучения.
+
+    Returns
+    -------
+    dict
+        Все вычисленные метрики.
+    """
+
+    model.eval()
+
+    metrics.reset()
+
+    running_loss = 0.0
+
+    saved_predictions = False
+
+    progress = tqdm(
+        loader,
+        desc="Validation",
+        leave=False
+    )
+
+    for images, masks in progress:
+
+        images = images.to(device)
+
+        masks = masks.to(device)
+
+        outputs = model(images)
+
+        loss = criterion(
+            outputs,
+            masks
+        )
+
+        running_loss += loss.item()
+
+        metrics.update(
+            outputs,
+            masks
+        )
+
+        progress.set_postfix(
+
+            loss=f"{loss.item():.4f}"
+
+        )
+
+        # --------------------------------------------
+        # сохраняем несколько предсказаний
+        # только один раз за эпоху
+        # --------------------------------------------
+
+        if not saved_predictions:
+
+            prediction_visualizer.save_batch(
+
+                images,
+
+                masks,
+
+                outputs,
+
+                epoch,
+
+                number=3
+
+            )
+
+            saved_predictions = True
+
+    summary = metrics.summary()
+
+    summary["val_loss"] = (
+
+        running_loss /
+
+        len(loader)
+
+    )
+
+    return summary
+
+# --------------------------------------------------------
+# Красивый вывод результатов эпохи
+# --------------------------------------------------------
+
+def print_epoch_summary(
+        epoch,
+        total_epochs,
+        train_loss,
+        results,
+        learning_rate,
+        epoch_time
+):
+
+    print()
+
+    print("=" * 65)
+
+    print(f"Epoch {epoch}/{total_epochs}")
+
+    print("-" * 65)
+
+    print(f"Train Loss      : {train_loss:.4f}")
+
+    print(f"Validation Loss : {results['val_loss']:.4f}")
+
+    print(f"Pixel Accuracy  : {results['pixel_accuracy']:.4f}")
+
+    print(f"Mean IoU        : {results['mean_iou']:.4f}")
+
+    print(f"Mean Dice       : {results['mean_dice']:.4f}")
+
+    print(f"Learning Rate   : {learning_rate:.6f}")
+
+    print(f"Epoch Time      : {epoch_time:.1f} sec")
+
+    print("=" * 65)
+
+    print()
+
+# --------------------------------------------------------
+# Main
+# --------------------------------------------------------
+
+def main():
+
+    device = get_device()
+
+    output_dir = create_experiment()
+
+    logger, metrics, visualizer, prediction_visualizer = build_utils(
+        output_dir
+    )
+
+    train_loader, val_loader = build_dataloaders()
+
+    model = build_model(device)
+
+    optimizer, scheduler = build_optimizer(model)
+
+    criterion = build_loss()
+
+    best_iou = 0.0
+
+    patience_counter = 0
+
+    history = {
+
+        "epoch": [],
+
+        "train_loss": [],
+
+        "val_loss": [],
+
+        "pixel_accuracy": [],
+
+        "mean_iou": [],
+
+        "mean_dice": [],
+
+        "learning_rate": [],
+
+        "epoch_time": []
+
+    }
+
+    print()
+
+    print("Training started...")
+
+    print()
+
+    for epoch in range(
+
+            1,
+
+            config.NUM_EPOCHS + 1
+
+    ):
+
+        train_loss, epoch_time = train_one_epoch(
 
             model,
 
@@ -239,11 +627,13 @@ def main():
 
             criterion,
 
+            metrics,
+
             device
 
         )
 
-        val_loss = validate(
+        results = validate(
 
             model,
 
@@ -251,42 +641,180 @@ def main():
 
             criterion,
 
-            device
+            metrics,
+
+            prediction_visualizer,
+
+            device,
+
+            epoch
 
         )
 
-        print(
+        scheduler.step(
 
-            f"Train Loss: {train_loss:.5f}"
-
-        )
-
-        print(
-
-            f"Val Loss:   {val_loss:.5f}"
+            results["mean_iou"]
 
         )
 
-        if val_loss < best_loss:
+        lr = optimizer.param_groups[0]["lr"]
+        history["epoch"].append(epoch)
 
-            best_loss = val_loss
+        history["train_loss"].append(train_loss)
+
+        history["val_loss"].append(
+
+            results["val_loss"]
+
+        )
+
+        history["pixel_accuracy"].append(
+
+            results["pixel_accuracy"]
+
+        )
+
+        history["mean_iou"].append(
+
+            results["mean_iou"]
+
+        )
+
+        history["mean_dice"].append(
+
+            results["mean_dice"]
+
+        )
+
+        history["learning_rate"].append(lr)
+
+        history["epoch_time"].append(epoch_time)
+
+        print_epoch_summary(
+
+            epoch,
+
+            config.NUM_EPOCHS,
+
+            train_loss,
+
+            results,
+
+            lr,
+
+            epoch_time
+
+        )
+
+        logger.log_epoch(
+
+            epoch,
+
+            train_loss,
+
+            results
+
+        )
+
+        if results["mean_iou"] > best_iou:
+
+            best_iou = results["mean_iou"]
+
+            patience_counter = 0
 
             torch.save(
 
                 model.state_dict(),
 
-                Path(config.CHECKPOINT_DIR) /
+                output_dir /
+
+                "checkpoints" /
 
                 "best_model.pth"
 
             )
 
-            print("Best model saved.")
+            print(
+
+                "Best model updated."
+
+            )
+
+        else:
+
+            patience_counter += 1
+
+            print(
+
+                f"No improvement ({patience_counter})"
+
+            )
+
+        torch.save(
+
+            model.state_dict(),
+
+            output_dir /
+
+            "checkpoints" /
+
+            "last_model.pth"
+
+        )
+
+        if patience_counter >= config.PATIENCE:
+
+            print()
+
+            print(
+
+                "Early stopping."
+
+            )
+
+            break
+
+    logger.save_csv()
+
+    logger.save_json()
+
+    visualizer.build_all_plots(
+
+        history,
+
+        class_names=config.CLASS_NAMES,
+
+        class_iou=results["class_iou"],
+
+        class_dice=results["class_dice"]
+
+    )
 
     print()
 
-    print("Training finished.")
+    print("=" * 65)
 
+    print("Training completed.")
+
+    print()
+
+    print(
+
+        f"Best Mean IoU : {best_iou:.4f}"
+
+    )
+
+    print()
+
+    print(
+
+        "Results saved to"
+
+    )
+
+    print(output_dir)
+
+    print("=" * 65)
 
 if __name__ == "__main__":
 

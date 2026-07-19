@@ -14,7 +14,7 @@ from pathlib import Path
 # Пути
 # ============================================================
 
-DATASET_PATH = Path("/Users/victoria.zhuravleva/Desktop/учеба/ДИПЛОМ/Летняя практика/semantic_scene_description/semantic_scene_description/data/raw/LoveDA_small")
+DATASET_PATH = Path("data/LoveDA_small")
 
 OUTPUT_DIR = Path("outputs")
 
@@ -47,20 +47,9 @@ TEXTURE = None
 # Обучение
 # ============================================================
 
-#BATCH_SIZE = 4
-
-#NUM_EPOCHS = 30
-
-#LEARNING_RATE = 1e-4
-
-#NUM_WORKERS = 0
-
 MODEL_NAME = "light_unet"
 
 SAVE_BEST_ONLY = True
-
-#SEED = 42
-
 
 # ============================================================
 # Устройство
@@ -77,10 +66,20 @@ DEVICE = (
 
 SEED = 42
 
-BATCH_SIZE = 2
+BATCH_SIZE = 4
 
-NUM_EPOCHS = 20
+NUM_EPOCHS = 3
 
 LEARNING_RATE = 1e-4
 
 NUM_WORKERS = 0
+
+PATIENCE = 8
+
+EXPERIMENTS = [
+    ("RGB", None),
+    ("RGB_LBP", "lbp"),
+    ("RGB_ENTROPY", "entropy"),
+    ("RGB_VARIANCE", "variance"),
+    ("RGB_GABOR", "gabor"),
+]
