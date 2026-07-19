@@ -69,7 +69,7 @@ CLASS_NAMES = [
 
 MODEL_NAME = "LightUNet"
 
-BATCH_SIZE = 1
+BATCH_SIZE = 2
 
 NUM_EPOCHS = 1
 
