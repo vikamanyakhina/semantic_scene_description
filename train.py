@@ -749,7 +749,7 @@ def main():
 
         class_iou=results["iou"],
 
-        class_dice=results["class_dice"]
+        class_dice=results["dice"]
 
     )
 
