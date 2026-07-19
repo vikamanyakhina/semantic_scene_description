@@ -60,7 +60,7 @@ class TrainingLogger:
             metrics,
             learning_rate,
             epoch_time
-    ):
+      ):
 
         self.history["epoch"].append(epoch)
 

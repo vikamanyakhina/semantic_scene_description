@@ -211,7 +211,7 @@ def build_dataloaders():
 
         num_workers=config.NUM_WORKERS,
 
-        pin_memory=False
+        pin_memory=True
 
     )
 
@@ -376,51 +376,47 @@ def train_one_epoch(
         leave=False
     )
 
-    import time
+    for images, masks in progress:
 
-  for images, masks in progress:
+        images = images.to(device)
 
-      t0 = time.time()
+        masks = masks.to(device)
 
-      images = images.to(device)
-      masks = masks.to(device)
+        optimizer.zero_grad()
 
-      t1 = time.time()
+        outputs = model(images)
 
-      optimizer.zero_grad()
+        loss = criterion(
+            outputs,
+            masks
+        )
 
-      outputs = model(images)
+        loss.backward()
 
-      loss = criterion(outputs, masks)
+        optimizer.step()
 
-      loss.backward()
+        running_loss += loss.item()
 
-      optimizer.step()
+        metrics.update(
+            outputs,
+            masks
+        )
 
-      t2 = time.time()
+        progress.set_postfix(
 
-      metrics.update(outputs, masks)
+            loss=f"{loss.item():.4f}"
 
-      t3 = time.time()
+        )
 
-      print(
-          f"Load: {t1-t0:.3f} | "
-          f"Train: {t2-t1:.3f} | "
-          f"Metrics: {t3-t2:.3f}"
-      )
+    epoch_time = time.time() - start_time
 
-      break
-
-      epoch_time = time.time() - start_time
-
-     train_loss = (
+    train_loss = (
 
         running_loss /
 
         len(loader)
 
-      )
-    
+    )
 
     return train_loss, epoch_time
 
