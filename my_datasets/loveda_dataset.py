@@ -1,8 +1,14 @@
 """
 datasets/loveda_dataset.py
 
-Dataset для работы с LoveDA.
-Поддерживает загрузку RGB-изображений и дополнительных текстурных признаков.
+Dataset для LoveDA.
+
+Поддерживает:
+
+- RGB
+- RGB + Texture
+- автоматическое изменение размера
+- использование config.py
 """
 
 from pathlib import Path
@@ -23,20 +29,19 @@ class LoveDADataset(Dataset):
             root_dir,
             split="Train",
             texture=None,
-            transform=None,
             use_texture=False,
-            texture_type=None, 
-            texture_dir=None
-          ):
+            transform=None
+    ):
 
         self.root_dir = Path(root_dir)
-        self.split = split
-        self.texture = texture
-        self.transform = transform
-        self.use_texture = use_texture
-        self.texture_type = texture_type
-        self.texture_dir = texture_dir
 
+        self.split = split
+
+        self.texture = texture
+
+        self.use_texture = use_texture
+
+        self.transform = transform
 
         self.samples = []
 
@@ -59,9 +64,7 @@ class LoveDADataset(Dataset):
             if not image_folder.exists():
                 continue
 
-            image_paths = sorted(image_folder.glob("*.png"))
-
-            for image_path in image_paths:
+            for image_path in sorted(image_folder.glob("*.png")):
 
                 sample = {
 
@@ -96,27 +99,80 @@ class LoveDADataset(Dataset):
 
     def __getitem__(self, idx):
 
-      sample = self.samples[idx]
+        sample = self.samples[idx]
 
-      image = Image.open(sample["image"]).convert("RGB")
-      mask = Image.open(sample["mask"])
+        # ---------------------------------------------------
+        # RGB
+        # ---------------------------------------------------
 
-      # ----------------------------------------
-      # Масштабируем изображение
-      # ----------------------------------------
+        image = Image.open(
+            sample["image"]
+        ).convert("RGB")
 
-      image = image.resize(
-      (config.IMAGE_SIZE, config.IMAGE_SIZE),
-      Image.BILINEAR
-      )
+        mask = Image.open(
+            sample["mask"]
+        )
 
-      mask = mask.resize(
-      (config.IMAGE_SIZE, config.IMAGE_SIZE),
-      Image.NEAREST
-      )
+        # ---------------------------------------------------
+        # Resize
+        # ---------------------------------------------------
 
-      image = np.array(image)
+        image = image.resize(
+            (config.IMAGE_SIZE, config.IMAGE_SIZE),
+            Image.BILINEAR
+        )
 
-      mask = np.array(mask)
+        mask = mask.resize(
+            (config.IMAGE_SIZE, config.IMAGE_SIZE),
+            Image.NEAREST
+        )
 
-      return image, mask
+        image = np.array(image)
+
+        mask = np.array(mask)
+
+        # ---------------------------------------------------
+        # Texture
+        # ---------------------------------------------------
+
+        if self.use_texture and sample["texture"] is not None:
+
+            texture = Image.open(sample["texture"])
+
+            texture = texture.resize(
+                (config.IMAGE_SIZE, config.IMAGE_SIZE),
+                Image.BILINEAR
+            )
+
+            texture = np.array(texture)
+
+            if texture.ndim == 2:
+
+                texture = texture[..., None]
+
+            image = np.concatenate(
+                (image, texture),
+                axis=2
+            )
+
+        # ---------------------------------------------------
+        # Normalize
+        # ---------------------------------------------------
+
+        image = image.astype(np.float32)
+
+        image /= 255.0
+
+        # ---------------------------------------------------
+        # Tensor
+        # ---------------------------------------------------
+
+        image = torch.from_numpy(
+            image
+        ).float().permute(2, 0, 1)
+
+        mask = torch.from_numpy(
+            mask
+        ).long()
+
+        return image, mask
