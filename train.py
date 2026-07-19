@@ -29,13 +29,13 @@ import config
 # Dataset
 # --------------------------------------------------------
 
-from dataset.loveda_dataset import LoveDADataset
+from datasets.loveda_dataset import LoveDADataset
 
 # --------------------------------------------------------
 # Model
 # --------------------------------------------------------
 
-from models.unet import LightUNet
+from models.unet import UNet
 
 # --------------------------------------------------------
 # Utils
