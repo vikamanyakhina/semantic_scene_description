@@ -747,7 +747,7 @@ def main():
 
         class_names=config.CLASS_NAMES,
 
-        class_iou=results["class_iou"],
+        class_iou=results["iou"],
 
         class_dice=results["class_dice"]
 
