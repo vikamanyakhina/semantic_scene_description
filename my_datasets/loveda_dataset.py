@@ -13,6 +13,8 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset
 
+import config
+
 
 class LoveDADataset(Dataset):
 
@@ -104,13 +106,13 @@ class LoveDADataset(Dataset):
       # ----------------------------------------
 
       image = image.resize(
-        (256, 256),
-        Image.BILINEAR
+      (config.IMAGE_SIZE, config.IMAGE_SIZE),
+      Image.BILINEAR
       )
 
       mask = mask.resize(
-        (256, 256),
-        Image.NEAREST
+      (config.IMAGE_SIZE, config.IMAGE_SIZE),
+      Image.NEAREST
       )
 
       image = np.array(image)
