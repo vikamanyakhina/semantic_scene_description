@@ -74,24 +74,24 @@ class TrainingVisualizer:
         plt.close()
 
         # ---------------------------------------------------------
-       def plot_precision(self, history):
+    def plot_precision(self, history):
 
-          self._plot_line(
+            self._plot_line(
 
-              history["epoch"],
+                  history["epoch"],
 
-              history["mean_precision"],
+                  history["mean_precision"],
 
-              "Mean Precision",
+                  "Mean Precision",
 
-              "Precision",
+                  "Precision",
 
-              "precision.png"
+                  "precision.png"
 
-          )
+            )
        # ---------------------------------------------------------
        
-       def plot_confusion_matrix(
+    def plot_confusion_matrix(
         self,
         cm,
         class_names
@@ -163,7 +163,7 @@ class TrainingVisualizer:
       # ---------------------------------------------------------
 
        
-       def plot_recall(self, history):
+    def plot_recall(self, history):
 
         self._plot_line(
 
@@ -179,7 +179,7 @@ class TrainingVisualizer:
 
         )
       # ---------------------------------------------------------
-      def plot_f1(self, history):
+    def plot_f1(self, history):
 
         self._plot_line(
 
@@ -197,7 +197,7 @@ class TrainingVisualizer:
       # ---------------------------------------------------------
 
 
-        def _save_plot(self,
+    def _save_plot(self,
                       x,
                       y,
                       title,
