@@ -138,7 +138,7 @@ def create_experiment(
 # Dataset
 # --------------------------------------------------------
 
-def build_dataloaders(texture=None):
+def build_dataloaders():
 
     train_transform = get_train_augmentation(
         config.IMAGE_SIZE
@@ -156,7 +156,7 @@ def build_dataloaders(texture=None):
 
         use_texture=config.USE_TEXTURE,
 
-        texture=texture,
+        texture=config.TEXTURE,
 
         transform=train_transform
 
@@ -170,7 +170,7 @@ def build_dataloaders(texture=None):
 
         use_texture=config.USE_TEXTURE,
 
-        texture=texture,
+        texture=config.TEXTURE,
 
         transform=val_transform
 
