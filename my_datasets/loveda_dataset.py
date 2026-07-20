@@ -169,9 +169,9 @@ class LoveDADataset(Dataset):
 
             )
 
-            image = transformed["image"]
+            image = transformed["image"].float()
 
-            mask = transformed["mask"]
+            mask = transformed["mask"].long()
 
         else:
 
