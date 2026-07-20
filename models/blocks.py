@@ -31,6 +31,8 @@ class DoubleConv(nn.Module):
 
             nn.ReLU(inplace=True),
 
+            nn.Dropout2d(p=0.10),
+
             nn.Conv2d(
                 out_channels,
                 out_channels,
@@ -41,7 +43,9 @@ class DoubleConv(nn.Module):
 
             nn.BatchNorm2d(out_channels),
 
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
+
+            nn.Dropout2d(p=0.10),
 
         )
 

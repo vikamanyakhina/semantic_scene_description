@@ -16,7 +16,7 @@ class UNet(nn.Module):
             self,
             in_channels=3,
             num_classes=8,
-            base_channels=32
+            base_channels=64
     ):
         """
         Parameters
