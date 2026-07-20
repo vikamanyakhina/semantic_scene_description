@@ -544,7 +544,7 @@ def main(
 
     device = get_device()
 
-    output_dir = create_experiment()
+    output_dir = create_experiment(experiment_name)
 
     logger, metrics, visualizer, prediction_visualizer = build_utils(
         output_dir
@@ -806,4 +806,4 @@ if __name__ == "__main__":
       main(
           experiment_name,
           texture
-      )
+        )
