@@ -22,7 +22,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+import itertools
 
 class TrainingVisualizer:
 
@@ -39,13 +39,14 @@ class TrainingVisualizer:
 
     # ---------------------------------------------------------
 
-    def _save_plot(self,
-                   x,
-                   y,
-                   title,
-                   xlabel,
-                   ylabel,
-                   filename):
+    def _plot_line(
+            self,
+            x,
+            y,
+            title,
+            ylabel,
+            filename
+    ):
 
         plt.figure(figsize=(8, 5))
 
@@ -59,7 +60,7 @@ class TrainingVisualizer:
 
         plt.title(title)
 
-        plt.xlabel(xlabel)
+        plt.xlabel("Epoch")
 
         plt.ylabel(ylabel)
 
@@ -71,6 +72,163 @@ class TrainingVisualizer:
         )
 
         plt.close()
+
+        # ---------------------------------------------------------
+       def plot_precision(self, history):
+
+        self._plot_line(
+
+            history["epoch"],
+
+            history["mean_precision"],
+
+            "Mean Precision",
+
+            "Precision",
+
+            "precision.png"
+
+       )
+       # ---------------------------------------------------------
+       
+       def plot_confusion_matrix(
+        self,
+        cm,
+        class_names
+        ):
+
+            plt.figure(figsize=(9, 8))
+
+            plt.imshow(
+                cm,
+                interpolation="nearest",
+                cmap="Blues"
+            )
+
+            plt.colorbar()
+
+            tick_marks = np.arange(len(class_names))
+
+            plt.xticks(
+                tick_marks,
+                class_names,
+                rotation=45
+            )
+
+            plt.yticks(
+                tick_marks,
+                class_names
+            )
+
+            threshold = cm.max() / 2
+
+            for i, j in itertools.product(
+                    range(cm.shape[0]),
+                    range(cm.shape[1])
+            ):
+
+                plt.text(
+
+                    j,
+
+                    i,
+
+                    str(cm[i, j]),
+
+                    horizontalalignment="center",
+
+                    color="white"
+                    if cm[i, j] > threshold
+                    else "black"
+
+                )
+
+            plt.ylabel("Ground Truth")
+
+            plt.xlabel("Prediction")
+
+            plt.tight_layout()
+
+            plt.savefig(
+
+                self.plot_dir /
+                "confusion_matrix.png",
+
+                dpi=300
+
+            )
+
+            plt.close()
+       
+      # ---------------------------------------------------------
+
+       
+       def plot_recall(self, history):
+
+        self._plot_line(
+
+            history["epoch"],
+
+            history["mean_recall"],
+
+            "Mean Recall",
+
+            "Recall",
+
+            "recall.png"
+
+        )
+      # ---------------------------------------------------------
+      def plot_f1(self, history):
+
+        self._plot_line(
+
+            history["epoch"],
+
+            history["mean_f1"],
+
+            "Mean F1-score",
+
+            "F1",
+
+            "f1.png"
+
+        )
+      # ---------------------------------------------------------
+
+
+        def _save_plot(self,
+                      x,
+                      y,
+                      title,
+                      xlabel,
+                      ylabel,
+                      filename):
+
+            plt.figure(figsize=(8, 5))
+
+            plt.plot(
+                x,
+                y,
+                linewidth=2
+            )
+
+            plt.grid(True)
+
+            plt.title(title)
+
+            plt.xlabel(xlabel)
+
+            plt.ylabel(ylabel)
+
+            plt.tight_layout()
+
+            plt.savefig(
+                self.plot_dir / filename,
+                dpi=300
+            )
+
+            plt.close()
 
     # ---------------------------------------------------------
 
@@ -350,11 +508,21 @@ class TrainingVisualizer:
 
     # ---------------------------------------------------------
 
-    def build_all_plots(self,
-                        history,
-                        class_names=None,
-                        class_iou=None,
-                        class_dice=None):
+    def build_all_plots(
+
+            self,
+
+            history,
+
+            class_names=None,
+
+            class_iou=None,
+
+            class_dice=None,
+
+            confusion_matrix=None
+
+     ):
 
         self.plot_train_loss(history)
 
@@ -371,6 +539,12 @@ class TrainingVisualizer:
         self.plot_learning_rate(history)
 
         self.plot_epoch_time(history)
+
+        self.plot_precision(history)
+
+        self.plot_recall(history)
+
+        self.plot_f1(history)
 
         if class_names is not None:
 
@@ -389,3 +563,12 @@ class TrainingVisualizer:
                 class_dice
 
             )
+        if confusion_matrix is not None:
+
+          self.plot_confusion_matrix(
+
+              confusion_matrix,
+
+              class_names
+
+          )

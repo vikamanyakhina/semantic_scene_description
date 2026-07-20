@@ -47,7 +47,13 @@ class TrainingLogger:
 
             "learning_rate": [],
 
-            "epoch_time": []
+            "epoch_time": [],
+
+            "mean_precision": [],
+
+            "mean_recall": [],
+
+            "mean_f1": [],
         }
 
     # -------------------------------------------------------------
@@ -59,7 +65,7 @@ class TrainingLogger:
             val_loss,
             metrics,
             learning_rate,
-            epoch_time
+            epoch_time,
       ):
 
         self.history["epoch"].append(epoch)
@@ -78,6 +84,18 @@ class TrainingLogger:
 
         self.history["mean_dice"].append(
             metrics["mean_dice"]
+        )
+
+        self.history["mean_precision"].append(
+            metrics["mean_precision"]
+        )
+
+        self.history["mean_recall"].append(
+            metrics["mean_recall"]
+        )
+
+        self.history["mean_f1"].append(
+            metrics["mean_f1"]
         )
 
         self.history["learning_rate"].append(
@@ -129,6 +147,9 @@ class TrainingLogger:
                 "pixel_accuracy",
                 "mean_iou",
                 "mean_dice",
+                "mean_precision",
+                "mean_recall",
+                "mean_f1",
                 "learning_rate",
                 "epoch_time"
             ])
@@ -148,6 +169,12 @@ class TrainingLogger:
                     self.history["mean_iou"][i],
 
                     self.history["mean_dice"][i],
+
+                    self.history["mean_precision"][i],
+
+                    self.history["mean_recall"][i],
+
+                    self.history["mean_f1"][i],
 
                     self.history["learning_rate"][i],
 
