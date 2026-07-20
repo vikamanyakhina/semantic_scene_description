@@ -21,19 +21,12 @@ def get_train_augmentation(image_size):
 
         A.RandomRotate90(p=0.5),
 
-        A.ShiftScaleRotate(
-
-            shift_limit=0.05,
-
-            scale_limit=0.10,
-
-            rotate_limit=20,
-
-            border_mode=0,
-
-            p=0.5
-
-        ),
+        A.Affine(
+          translate_percent=(-0.10, 0.10),
+          scale=(0.90, 1.10),
+          rotate=(-15, 15),
+          p=0.5
+         ),
 
         A.RandomBrightnessContrast(
 
