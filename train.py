@@ -752,21 +752,20 @@ def main(
 
             break
 
+    history = logger.history
+    
     logger.save_csv()
 
     logger.save_json()
 
     visualizer.build_all_plots(
-
-        history,
-
-        class_names=config.CLASS_NAMES,
-
-        class_iou=results[" class_iou"],
-
-        class_dice=results["class_dice"]
-
+      history=history,
+      class_names=config.CLASS_NAMES,
+      class_iou=metrics.iou().tolist(),
+      class_dice=metrics.dice().tolist()
     )
+
+    logger.save()
 
     print()
 
@@ -793,6 +792,7 @@ def main(
     print(output_dir)
 
     print("=" * 65)
+
 
 if __name__ == "__main__":
 
