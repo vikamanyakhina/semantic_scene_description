@@ -110,9 +110,11 @@ def get_device():
 # Создание папок эксперимента
 # --------------------------------------------------------
 
-def create_experiment():
+def create_experiment(
 
-    experiment_name = config.EXPERIMENT_NAME
+        experiment_name
+
+):
 
     output_dir = (
 
@@ -122,31 +124,13 @@ def create_experiment():
 
     )
 
-    folders = [
+    output_dir.mkdir(
 
-        output_dir,
+        parents=True,
 
-        output_dir / "plots",
+        exist_ok=True
 
-        output_dir / "history",
-
-        output_dir / "metrics",
-
-        output_dir / "predictions",
-
-        output_dir / "checkpoints"
-
-    ]
-
-    for folder in folders:
-
-        folder.mkdir(
-
-            parents=True,
-
-            exist_ok=True
-
-        )
+    )
 
     return output_dir
 
@@ -172,7 +156,7 @@ def build_dataloaders():
 
         use_texture=config.USE_TEXTURE,
 
-        texture=config.TEXTURE_TYPE,
+        texture=texture,
 
         transform=train_transform
 
@@ -186,7 +170,7 @@ def build_dataloaders():
 
         use_texture=config.USE_TEXTURE,
 
-        texture=config.TEXTURE_TYPE,
+        texture=texture,
 
         transform=val_transform
 
@@ -550,7 +534,13 @@ def print_epoch_summary(
 # Main
 # --------------------------------------------------------
 
-def main():
+def main(
+
+        experiment_name,
+
+        texture
+
+  ):
 
     device = get_device()
 
@@ -806,4 +796,14 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    for experiment_name, texture in config.EXPERIMENTS:
+
+    print()
+    print("=" * 70)
+    print(f"Experiment: {experiment_name}")
+    print("=" * 70)
+
+    main(
+        experiment_name,
+        texture
+    )

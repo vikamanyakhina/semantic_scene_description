@@ -22,8 +22,6 @@ OUTPUT_DIR = Path("/content/drive/MyDrive/MyProject/outputs")
 # Эксперименты
 # ==========================================================
 
-EXPERIMENT_NAME = "RGB"
-
 EXPERIMENTS = [
     ("RGB", None),
     ("RGB_LBP", "lbp"),
@@ -37,8 +35,6 @@ EXPERIMENTS = [
 # ==========================================================
 
 USE_TEXTURE = False
-
-TEXTURE_TYPE = None
 
 TEXTURE = None
 
