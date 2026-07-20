@@ -159,20 +159,27 @@ class LoveDADataset(Dataset):
         # Normalize
         # ---------------------------------------------------
 
-        image = image.astype(np.float32)
+        if self.transform is not None:
 
-        image /= 255.0
+            transformed = self.transform(
 
-        # ---------------------------------------------------
-        # Tensor
-        # ---------------------------------------------------
+                image=image,
 
-        image = torch.from_numpy(
-            image
-        ).float().permute(2, 0, 1)
+                mask=mask
 
-        mask = torch.from_numpy(
-            mask
-        ).long()
+            )
+
+            image = transformed["image"]
+
+            mask = transformed["mask"]
+
+        else:
+
+            image = image.astype(np.float32) / 255.0
+
+            image = torch.from_numpy(image).permute(2, 0, 1).float()
+
+            mask = torch.from_numpy(mask).long()
+       
 
         return image, mask

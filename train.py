@@ -19,6 +19,11 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 import torch.nn.functional as F
 
+from dataset.augmentations import (
+    get_train_augmentation,
+    get_val_augmentation
+)
+
 # --------------------------------------------------------
 # Конфигурация проекта
 # --------------------------------------------------------
@@ -151,18 +156,40 @@ def create_experiment():
 
 def build_dataloaders():
 
+    train_transform = get_train_augmentation(
+        config.IMAGE_SIZE
+    )
+
+    val_transform = get_val_augmentation(
+        config.IMAGE_SIZE
+    )
+
     train_dataset = LoveDADataset(
+
         root_dir=config.DATASET_PATH,
+
         split="Train",
-        texture=config.TEXTURE,
-        use_texture=config.USE_TEXTURE
+
+        use_texture=config.USE_TEXTURE,
+
+        texture=config.TEXTURE_TYPE,
+
+        transform=train_transform
+
     )
 
     val_dataset = LoveDADataset(
+
         root_dir=config.DATASET_PATH,
+
         split="Val",
-        texture=config.TEXTURE,
-        use_texture=config.USE_TEXTURE
+
+        use_texture=config.USE_TEXTURE,
+
+        texture=config.TEXTURE_TYPE,
+
+        transform=val_transform
+
     )
 
     print()
@@ -221,15 +248,13 @@ def build_optimizer(model):
 
     )
 
-    scheduler = ReduceLROnPlateau(
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
 
-        optimizer,
+      optimizer,
 
-        mode="max",
+      T_max=config.NUM_EPOCHS,
 
-        factor=0.5,
-
-        patience=3
+      eta_min=1e-6
 
     )
 
@@ -242,10 +267,10 @@ def build_optimizer(model):
 def build_loss():
 
     criterion = CombinedLoss(
-        ce_weight=1.0,
-        dice_weight=1.0
+        ce_weight=0.5,
+        dice_weight=0.5,
+        focal_weight=0.3
     )
-
     return criterion
 
 # --------------------------------------------------------
