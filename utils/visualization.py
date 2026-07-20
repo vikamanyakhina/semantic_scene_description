@@ -76,19 +76,19 @@ class TrainingVisualizer:
         # ---------------------------------------------------------
        def plot_precision(self, history):
 
-        self._plot_line(
+          self._plot_line(
 
-            history["epoch"],
+              history["epoch"],
 
-            history["mean_precision"],
+              history["mean_precision"],
 
-            "Mean Precision",
+              "Mean Precision",
 
-            "Precision",
+              "Precision",
 
-            "precision.png"
+              "precision.png"
 
-       )
+          )
        # ---------------------------------------------------------
        
        def plot_confusion_matrix(
