@@ -793,7 +793,7 @@ def main(
 
     print("=" * 65)
 
-if name == "main":
+if __name__ == "__main__":
 
     for experiment_name, texture in config.EXPERIMENTS:
 
