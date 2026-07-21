@@ -6,7 +6,7 @@ import config
 
 def check():
 
-    experiment = Path(config.OUTPUT_DIR) / config.EXPERIMENT_NAME
+    experiment = Path(config.OUTPUT_DIR) / config.EXPERIMENTS
 
     print("=" * 60)
     print("PROJECT CHECK")
