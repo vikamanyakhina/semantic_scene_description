@@ -191,7 +191,7 @@ def build_dataloaders():
         pin_memory=(config.DEVICE == "cuda")
     )
 
-val_loader = DataLoader(
+    val_loader = DataLoader(
         val_dataset,
         batch_size=config.BATCH_SIZE,
         shuffle=False,
