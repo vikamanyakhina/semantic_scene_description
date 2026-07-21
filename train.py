@@ -110,29 +110,31 @@ def get_device():
 # Создание папок эксперимента
 # --------------------------------------------------------
 
-def create_experiment(
+def create_experiment(experiment_name):
 
-        experiment_name
+    experiment_dir = Path(config.OUTPUT_DIR) / experiment_name
 
-):
-
-    output_dir = (
-
-        Path(config.OUTPUT_DIR)
-
-        / experiment_name
-
-    )
-
-    output_dir.mkdir(
-
+    (experiment_dir / "checkpoints").mkdir(
         parents=True,
-
         exist_ok=True
-
     )
 
-    return output_dir
+    (experiment_dir / "plots").mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    (experiment_dir / "predictions").mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    (experiment_dir / "history").mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    return experiment_dir
 
 # --------------------------------------------------------
 # Dataset
@@ -189,7 +191,7 @@ def build_dataloaders():
         pin_memory=(config.DEVICE == "cuda")
     )
 
-    val_loader = DataLoader(
+val_loader = DataLoader(
         val_dataset,
         batch_size=config.BATCH_SIZE,
         shuffle=False,
@@ -444,7 +446,6 @@ def validate(
         )
 
         running_loss += loss.item()
-
         metrics.update(
             outputs,
             masks
@@ -699,7 +700,6 @@ def main(
             best_iou = results["mean_iou"]
 
             patience_counter = 0
-
             torch.save(
 
                 model.state_dict(),
@@ -794,7 +794,7 @@ def main(
     print("=" * 65)
 
 
-if __name__ == "__main__":
+if name == "main":
 
     for experiment_name, texture in config.EXPERIMENTS:
 
