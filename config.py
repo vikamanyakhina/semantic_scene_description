@@ -23,7 +23,7 @@ OUTPUT_DIR = Path("/content/drive/MyDrive/MyProject/outputs")
 # ==========================================================
 
 EXPERIMENTS = [
-    ("RGB", None),
+   # ("RGB", None),
     ("RGB_LBP", "lbp"),
     ("RGB_ENTROPY", "entropy"),
     ("RGB_VARIANCE", "variance"),
