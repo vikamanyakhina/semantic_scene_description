@@ -21,6 +21,7 @@ from scene_description import SceneDescription
 
 from utils.prediction_visualizer import PredictionVisualizer
 
+
 def get_device():
 
     if torch.cuda.is_available():
@@ -103,13 +104,19 @@ def predict(
 
     ).convert("RGB")
 
+    image = image.resize(
+    (config.IMAGE_SIZE, config.IMAGE_SIZE)
+    )
+
+    tensor = transform(image)
+
     image_np = np.array(image)
 
-    tensor = ToTensor()(image)
+    #tensor = ToTensor()(image)
 
-    tensor = tensor.unsqueeze(0)
+    #tensor = tensor.unsqueeze(0)
 
-    tensor = tensor.to(device)
+    #tensor = tensor.to(device)
 
     output = model(tensor)
 
@@ -241,12 +248,26 @@ def main(
             save_dir
 
         )
+        """
+
+        unique, counts = np.unique(prediction, return_counts=True)
+
+        print("Classes:")
+
+        for u, c in zip(unique, counts):
+            print(u, c)
+        
+        """
 
         description = scene.describe(
 
             prediction
 
         )
+
+        percentages = scene.calculate_percentages(prediction)
+
+        print(percentages)
 
         print(description)
 

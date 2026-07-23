@@ -7,7 +7,7 @@ mask = np.array(Image.open("/content/drive/MyDrive/MyProject/outputs/RGB/inferen
 print("Shape:", mask.shape)
 print("Unique:", np.unique(mask))
 """
-
+"""
 from PIL import Image
 import numpy as np
 from pathlib import Path
@@ -25,3 +25,17 @@ mask = np.array(
 )
 
 print(np.unique(mask))
+"""
+from pathlib import Path
+from PIL import Image
+import numpy as np
+import config
+
+
+classes = set()
+
+for mask in Path(config.DATASET_PATH).rglob("masks_png/*.png"):
+    img = np.array(Image.open(mask))
+    classes.update(np.unique(img))
+
+print(sorted(classes))
