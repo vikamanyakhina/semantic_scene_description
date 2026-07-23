@@ -38,14 +38,14 @@ class PredictionVisualizer:
     def decode_mask(mask):
 
         colors = np.array([
-            [0, 0, 0],          # background
-            [255, 0, 0],        # building
-            [128, 128, 128],    # road
-            [0, 0, 255],        # water
-            [0, 255, 0],        # vegetation
-            [255, 255, 0],      # agriculture
-            [34, 139, 34],      # forest
-            [255, 165, 0]       # barren
+            [0, 0, 0],          # Background
+            [255, 0, 0],        # Building
+            [128,128,128],      # Road
+            [0,0,255],          # Water
+            [255,165,0],        # Barren
+            [34,139,34],        # Forest
+            [255,255,0],        # Agricultural
+            [0,255,0]           # Urban Green
         ], dtype=np.uint8)
 
         return colors[mask]

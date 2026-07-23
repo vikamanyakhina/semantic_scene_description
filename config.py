@@ -56,7 +56,7 @@ CLASS_NAMES = [
     "Barren",
     "Forest",
     "Agricultural",
-    "Unknown"
+    "Urban Green"
 ]
 
 # ==========================================================
