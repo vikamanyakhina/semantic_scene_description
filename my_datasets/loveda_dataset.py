@@ -1,5 +1,5 @@
 """
-datasets/loveda_dataset.py
+my_datasets/loveda_dataset.py
 
 Dataset для LoveDA.
 

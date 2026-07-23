@@ -21,6 +21,7 @@ from scene_description import SceneDescription
 
 from utils.prediction_visualizer import PredictionVisualizer
 
+from my_datasets.augmentations import get_val_augmentation
 
 def get_device():
 
@@ -108,9 +109,15 @@ def predict(
     (config.IMAGE_SIZE, config.IMAGE_SIZE)
     )
 
-    tensor = transform(image)
-
     image_np = np.array(image)
+
+    transform = get_val_augmentation(config.IMAGE_SIZE)
+
+    transformed = transform(image=image_np)
+
+    tensor = transformed["image"]
+
+    tensor = tensor.unsqueeze(0).to(device)
 
     #tensor = ToTensor()(image)
 
@@ -130,6 +137,8 @@ def predict(
 
     prediction = prediction.squeeze().cpu().numpy()
 
+    print("Prediction shape:", prediction.shape)
+    
     return image_np, prediction
 
 def main(
