@@ -31,42 +31,28 @@ def get_device():
 
     return torch.device("cpu")
 
-def load_model(device):
+def load_model(device, experiment_name):
 
     model = UNet(
-
         in_channels=config.IN_CHANNELS,
-
         num_classes=config.NUM_CLASSES
-
     )
 
     checkpoint = (
-
         Path(config.OUTPUT_DIR)
-
-        / config.EXPERIMENT_NAME
-
+        / experiment_name
         / "checkpoints"
-
         / "best_model.pth"
-
     )
 
     model.load_state_dict(
-
         torch.load(
-
             checkpoint,
-
             map_location=device
-
         )
-
     )
 
     model.to(device)
-
     model.eval()
 
     return model
@@ -139,7 +125,10 @@ def predict(
 
     return image_np, prediction
 
-def main():
+def main(
+        experiment_name,
+        texture
+      ):
 
     device = get_device()
 
@@ -153,13 +142,15 @@ def main():
 
     print()
 
-    model = load_model(device)
-
+    model = load_model(
+        device,
+        experiment_name
+    )
     visualizer = PredictionVisualizer(
 
         Path(config.OUTPUT_DIR)
 
-        / config.EXPERIMENT_NAME
+        / experiment_name
 
         / "inference"
 
@@ -187,7 +178,7 @@ def main():
 
             Path(config.OUTPUT_DIR)
 
-            / config.EXPERIMENT_NAME
+            / experiment_name
 
             / "inference"
 
@@ -267,4 +258,14 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    for experiment_name, texture in config.EXPERIMENTS:
+
+        print()
+        print("=" * 70)
+        print(experiment_name)
+        print("=" * 70)
+
+        main(
+            experiment_name,
+            texture
+        )
