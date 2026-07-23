@@ -65,10 +65,11 @@ class SceneDescription:
         forest = percentages["Forest"]
         agriculture = percentages["Agricultural"]
         water = percentages["Water"]
+        urban_green = percentages["Urban Green"]
 
         urban = building + road
 
-        nature = forest + agriculture
+        nature = forest + agriculture + urban_green
 
         if urban >= 45:
             return "Городская"
